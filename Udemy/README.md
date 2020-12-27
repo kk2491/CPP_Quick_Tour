@@ -165,6 +165,39 @@ doubt : https://www.udemy.com/course/beginning-c-plus-plus-programming/learn/lec
 
 **Inline Functions**
 
+Inline codes used to avoid function call overhead (activation record - returning back to the original function flow)  
+
+Function call overhead is greater than the function execution time.
+
+Inline functions used to : 
+generate inline code  
+inline assembly code  
+avoids the functions call overhead
+
+
+**Time Elapsed** 
+https://www.techiedelight.com/measure-elapsed-time-program-chrono-library/
+
+
+doubt : Header files time.h and chrono and unistd.h
+
+
+**Recursive Functions**
+Function calling itself.
+2 or more activation record on the stack for the same function then it is recursion.
+
+if recursion does not stop - infinite recursion
+resource intensive
+base cases are very important
+anything that can be done recursively can be done iteratively 
+
+
+Binary search tree, Depth first search, Breadth first search, 
+Fibanocci, Factorial of a number, 
+
+
+doubt : Fibanocci series
+https://www.youtube.com/watch?v=dxyYP3BSdcQ&ab_channel=mycodeschool
 
 
 **Memory Allocation**
@@ -187,12 +220,192 @@ https://www.geeksforgeeks.org/stack-vs-heap-memory-allocation/
 
 **Why pointers**
 
+180 mins
+
 Allocating and deallocating memory during runtime
 
 C++ gives more power over machine. C++ used in OS, System software device drivers, embedded systems etc.
 
+Pointer is a variable whose value is an address
+
+Pointer points to a variable or a function 
+
+Why pointers?
 
 
+Declaring pointers:
+variable_type *pointer;
+
+if pointer is not initialized it contains garbage address
+
+doubt
+char *char_pointer - does not have a garbage address
+string *str_pointer - assigned address is 0
+
+doubt : initialization of char and string pointer to nullptr 
+
+pointer should be always initialized
+Use nullptr to initialize nullptr so that pointer is pointing to nowhere - address is 0
+
+note: typeid(variable).name() - gives the data type of the variable
+https://stackoverflow.com/questions/16268090/understanding-the-output-of-typeid-name
+
+int    - i 
+float  - f
+double - d
+char   - c
+string - A4 c
+
+pointer can be initialized to nullptr with * during declaration or later as below.
+Approach 1: int *p = nullptr;
+Approach 2: int *p;
+            p = 0;
+
+doubt : Pointer initialization while declaratio
+Approach 1      int data = 10;
+                int *ptr = &data; 
+
+Approach 2      int data = 10;
+                int *ptr = nullptr;
+                ptr = &data;
+
+Pointers are variables - they can change
+Pointers can be null
+Pointers can be uninitialized
+
+Deference pointer - using *
+
+
+Note: Deferencing string pointer assigned to null - and trying to print causes segmentation fault 
+
+Pointer can be reassigned such that it can point to different memory location
+
+Derefrerencing vector pointer
+vector = {1, 2, 3, 4, 5}
+*vector_ptr = &vector; -- pointing to the vector vector
+print *vector_ptr -- points to the vector vector - to get the individual elements
+print (*vector_ptt).at(0)
+
+
+*Dynamic Memory Allocation* -- Pointers topic 
+
+Allocating storage at run time
+Allocation of Storage from **heap** by using new keyword
+
+If the pointer lost - then it is not possible to get back the variable 
+only way to access the storage is via pointers
+
+allocate and deallocate the storage - Heap
+
+Memory Models
+
+-------------------------
+|                       |
+|                       |
+|                       |
+|  Heap - Free Storage  |
+|  Dynamic Allocations  |
+|       By user         |
+|                       |
+|                       |
+|                       |
+-------------------------
+|                       |
+|   Stack - Func call   |
+|     Push and pop      |
+|                       |
+-------------------------
+|    Static Variables   |   --> Global variables
+-------------------------
+|                       |
+|     Code Area         |
+|                       |
+-------------------------
+
+doubt - memory leak
+
+Memory will run out if there is no space in the heap
+
+**Pointer and Array** 
+
+array[3] = {1, 2, 3}
+print(array)    -   prints the address of the first element
+print(*array)   -   prints the first element
+
+*array_ptr = array
+print(array_ptr)    - address of the first element
+print(*array_ptr)   - value of the first element
+
+in arrays pointers are same as normal variables means:
+
+*array_ptr = array
+array[0] array[1] array[2] = array_ptr[0] array_ptr[1] array_ptr[2]
+
+Array can be accessed using below
+array_name[index]
+array_ptr_name[index]
+*(array_name + offset)
+*(array_ptr_name + offset)
+
+
+
+Pointer Arithmetic
+
+++ and -- 
+based on the size of the datatype of the variable the pointer is pointing to
+
++ and - 
+pointer + n 
+(address) + (n * size_of_datatype)
+(address) - (n * size_of_datatype)
+
+Subtracting 2 pointers 
+int n = ptr_1 - ptr_2  (datatype should be same else compiler error)
+Returns the number of elements between the 2 pointers
+
+Comparing 2 pointers == and != 
+if both the pointers are pointing to the same address then == true 
+
+
+for (i from 0 to n) {
+    print(*score_ptr)
+    score_ptr++
+}
+
+is same as 
+deference the pointer then increment the pointer
+
+for (i from 0 to n) {
+    print(*score_ptr++)
+}
+
+note: C style string
+char name[] = "Name";
+
+**const and pointers** (doubt)
+* Pointers to constants
+* constant pointers
+* constant pointers to constants
+
+Pointers to constants - Points to a variable which should remain constant, pointer can point to different variable
+    error: assignment of read-only location
+    note : variable can be changed by using the actual variable num_1 = 100 to num_1 = 111 is allowed..
+           num_1_ptr = &num_1
+           *num_1_ptr = 9990119 - Is not allowed - Error
+           but can not (should not) changed usng the pointer variable
+
+
+Constant pointers - Pointer can not be pointed to different variable, the pointed variable can change
+    error: assignment of read-only variable ‘num_2_ptr’
+    note : num_2_ptr = &num_2
+           num_2_ptr = &num_2_new_var - Not allowed - Error
+           Note: can not be initialized with null pointer
+
+
+Constant pointers to constants - Pointers can not be pointed to different address and variable should not change 
+
+
+Pass by reference using pointers 
 
 
 
