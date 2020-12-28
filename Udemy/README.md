@@ -410,6 +410,280 @@ Pass by reference using pointers
 
 
 
+**Returning pointer from a function**
+Functions can return pointers
+The datatype of the pointer needs to be specified
+doubt: Never return a pointer to a local function variable
+
+Return dynamically allocated array
+
+Note: Pointer from the Heap can be returned from a function 
+        locally created pointer can not be returned from a function - because function stack gets cleared after the function execution
+
+DONT DO THIS
+int *function_1() {
+    int size;
+    return &size;
+}
+size is local to the function, function call stack gets cleared
+
+**Pointers potential pitfall**
+1. Uninitialized pointers
+    pointing to garbage
+
+2. Dangling pointers
+    Pointing to memory that is no longer valid 
+    2 cases
+        Pointer pointing to something from the function which is already terminated, returning a local variable pointer from function
+        2 Pointers pointing to the same address, one pointer releases the memory. but second pointer still trying to access the same
+
+3. Not checking if new failed to allocated memory
+    if new fails to allocate memory - exception is thrown
+    exception handling catch expception
+    dereferening null ptr caused program to crash
+
+4. Leaking memory  
+    Forgot to release the dynamically allocated memory
+    Lose the pointer - no longer accessible
+    memory is orphaned or leaked
+
+**References**
+1. Alias for a variable
+2. Must be initialized to a variable when created / declared
+3. Can not be null
+4. Once initialized can not be made to refer to other variables
+
+It is preferrable to use reference in for loop of vectors as it does not create new copy of the variables, hence no extra memory is used.
+However for printing it is better to use const key word as using the reference changes the original vector element.
+Changing the reference changes original variable and vice versa.
+
+**L Values and R Values**
+doubt - l values, r values
+
+l values - variables which have names and can be addressed
+    int num;                num is l value
+    x = 100                 x is l value
+    string name = "chong"   name is l value
+
+r values - variables which are not l values
+    x = 100         100 is r value
+    name = "chong"  chong is r value
+
+int max = max(20, 30)   
+    max - l value
+    max(20, 30) - r value
+
+references should be assigned to l values
+    int num = 100;
+    int &num_ref1 = num;    Correct
+    int &num_ref2 = 100;    Incorrect / error
+
+doubt codeLite : debug
+
+
+**Imp When to use pointers and references**
+
+Pass by value
+    When function does not modify actual parameters
+    When parameters are small and efficient to copy the elements (int, char, double)
+
+Pass by reference using pointer 
+    When the function does modify the actual parameters
+    When the parameter is extensive to copy
+    Its OK to the pointer allowed a nullptr value - useful in data structures
+
+Pass by reference using a pointer to const
+    When the function does not modify the actual parameters
+    When the parameter is extensive to copy
+    Its OK to the pointer allowed a nullptr value - useful in data structures
+
+Pass by reference using a const pointer to const
+    Above 3
+    You dont want to modify the pointer itself
+    (pointer is not moving, the data pointing to is not changing)
+
+Pass by reference using a reference
+    When the function does modify the actual parameters
+    When the parameter is extensive to copy
+    The parameter will never be nullptr
+    
+Pass by reference using a const reference
+    When the function does not modify the actual parameters
+    When the parameter is extensive to copy
+    The parameter will never be nullptr
+
+
+**Object Oriented Programming**
+
+doubt : shallow copying, deep copying, this pointer, copy constructor 
+
+Abstraction, Encapsulation
+
+Class Player {
+    string name;
+    string number;
+    int age;
+    int experience;
+
+    bool IsAvailable();
+    void UpdateScores();
+};
+
+Player player_1;
+Player *player_ptr = new Player();
+delete player_ptr;
+
+Note: by default string is initialized to empty (not garbage)
+
+dot operator - normal object
+arrow operator - pointer
+
+dereference the pointer and use the dot operator 
+    MyClass class_object;
+    class_object.method()
+    class_object.attributes
+
+    MyClass *pointer_class_object = new MyClass();
+    pointer_class_object->method()
+    pointer_class_object->attribute
+    (*pointer_class_object).method()
+    (*pointer_class_object).attribute
+
+**Public and Private**
+public - accessible everywhere  
+private - accessible only by members of the same class or friends of the same class
+protected - used with inheritance 
+
+Default : everything is Private
+
+doubt : include guards - 
+#ifndef _SYMBOL_ -- Checks if the _SYMBOL_ is present if present dont process go to #endif else go to #define and process
+#define _SYMBOL_
+.
+.
+.
+#endif 
+
+
+#pragma once - same as ifndef 
+
+double pragma once
+
+Style Guide
+https://users.ece.cmu.edu/~eno/coding/CppCodingStandard.html#classnames
+https://guiquanz.gitbooks.io/google-cc-style-guide/content/ebook/Naming.html
+https://guiquanz.gitbooks.io/google-cc-style-guide/content/ebook/Classes.html
+
+
+CMAKE - Imp
+http://derekmolloy.ie/hello-world-introductions-to-cmake/
+
+doubt:
+shared library or dynamic libraries - run time
+static library or archives - compile time linked by linker
+
+**Constructors**
+Special member method
+Useful for initialization
+Can be overloaded 
+No return type
+Same as class name
+Invoked during object creation
+
+**Destructors**
+Special member method
+Same as class name preceeded with ~
+Invoked when object is destroyed
+No return type
+Only one destructor per class can not be overloaded
+Release memory and other resources 
+
+{
+    Class class_object;
+}
+destuctor is called here - as soon as this block is over
+Destuctor is called right before object is destroyed 
+
+Class *ptr_object = new Class();
+delete ptr_object;
+Destruction is called as soon as delete ptr_object is called 
+
+**Default Constructor**
+Does not except any arguments
+Also called as no-args constructor 
+
+if no constructor is written, then C++ generates Default constructor
+
+System generated no-args constructors.
+
+Once Use defined constructor is impemented (with or without arguments) system stops generating no args constructor
+
+Class Item {
+    private:
+    string name;
+    int roll_num;
+
+    public:
+    Item(){         -- if this is not defined, then system will generate Default constructor
+        name = "None",
+        roll_num = 0;
+    }
+}
+
+Item item_1; --- No error
+
+Class Item {
+    private:
+    string name;
+    int roll_num;
+
+    public:
+    Item(string new_name, int num){         -- if this is not defined, then system will generate Default constructor
+        name = new_name,
+        roll_num = num;
+    }
+}
+
+Item item_1("kk", 109)  -- No error
+Item item_2;            -- compiler error   -- System stopped generating default constructor
+
+
+Overloading constructor 
+
+Avoid garbage data in created objects 
+
+**Construction Initialization Lists**
+
+In normal Constructor - how intialization happens... 
+Object created and members have some garbage values then it is reassigned to the values given in the constructor
+This is not true initialization
+
+Initialization needs to happen when the object is created
+
+Player {
+    private:
+    string name;
+    int health;
+    int experience;
+
+    public:
+    Player():name{"None"}, health{0}, xp{0}
+    // Player():name = "None", health = 0, xp = 0
+}
+
+Player class_object("KK", 100.0, 200.0)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

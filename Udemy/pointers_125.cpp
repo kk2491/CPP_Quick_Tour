@@ -27,7 +27,6 @@ void DisplayArray(int *int_ptr, int limit) {
         std::cout << *int_ptr << std::endl;
         int_ptr++;
     }
-    
 
 }
 
