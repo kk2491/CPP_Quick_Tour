@@ -292,6 +292,13 @@ print (*vector_ptt).at(0)
 Allocating storage at run time
 Allocation of Storage from **heap** by using new keyword
 
+    int *ptr = new int;
+
+    or
+
+    int *ptr = nullptr;
+    ptr = new int;
+
 If the pointer lost - then it is not possible to get back the variable 
 only way to access the storage is via pointers
 
@@ -672,6 +679,81 @@ Player {
 }
 
 Player class_object("KK", 100.0, 200.0)
+
+Normal constructor - assignment == Ineffient way to initialize
+
+doubt : this pointer
+
+Constructor Initialization list - Initialization order depends on the order variables declared
+
+Before normal constructor is called, variables are assigned to garbage variables or initlized values in declaration of each variables.
+
+**Delegating Constructor**
+
+One true initialization with all arguments and rest all uses the same initialization - just pass the template
+
+Player(string name, int health, int xp) : name_ {name}, health_ {health} xp_ {xp}
+
+Player() : Player("None", 0, 0) {}
+
+Player(string name) : Player(name, 0, 0) {}
+
+Player(string name, int health) : Player(name, health, 0) {}
+
+Player(string name, int health, int xp) : name_ {name}, health_ {health}, xp_ {xp}
+
+**Constructor parameters and Default values**
+Passing default argument values in constructor
+
+Single Constructor with initialization list
+
+Player::Player(string name = "None", int health = 0, int experience = 0)
+    : name_ {name}, health_ {health}, experience_ = experience {}
+
+doubt : All the agruments in the function declaration needs to be assigned with default value if one of the argument has default value.
+
+**Copy Constructor**
+doubt : why copy constructor is used ?
+
+Copy the object.. 
+Create new object from the existing object 
+
+what is the default copy constructor used by C++ 
+
+doubt : Default initializer values should be mentioned in both declaraion and definition ?
+https://stackoverflow.com/questions/4989483/where-to-put-default-parameter-value-in-c
+
+By default C++ has its own Copy constructor which would be invoked whenver a copy is made or new object is created from existing object.
+
+Copy constructor is a constructor which can be used / implemented when a new object is created from the existing object.
+
+**Shallow and Deep Copy**
+
+**Shall Copy**
+memberwise copy of all the attributes
+When there is a pointer as attributes, it copies the pointer (address) not the value it is pointing to.
+Hence when storage is released in the destructor, the other object is still pointing to the old address which is invalid now.
+
+Any class has raw pointer as data member will face this shallow copy issue 
+
+Error : double free or corruption (fasttop)
+
+2 pointers pointing to the same Memory and one in invoking the Destructor and clears the data.
+Now the other pointer is still looking at the same address which is already cleared.
+
+todo: Impplement using the default copy constructor 
+
+
+**Deep Copy**
+We just dont copy the pointer, the data being pointed is copied
+each copy will have a unique storage in the heap and 
+
+Create new storage and copy the value 
+
+
+
+
+
 
 
 
