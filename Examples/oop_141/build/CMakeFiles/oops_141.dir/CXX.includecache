@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+.././player.hpp
+string
+-
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oop_141/main.cpp
+player.hpp
+-
+iostream
+-
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oop_141/player.cpp
+player.hpp
+-
+iostream
+-
+

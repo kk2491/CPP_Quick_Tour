@@ -1,0 +1,3 @@
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oops_140/build/CMakeFiles/edit_cache.dir
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oops_140/build/CMakeFiles/oops_140.dir
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oops_140/build/CMakeFiles/rebuild_cache.dir

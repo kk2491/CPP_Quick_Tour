@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/op_overload_159/main.cpp
+mystring.hpp
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/op_overload_159/mystring.hpp
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/op_overload_159/mystring.cpp
+mystring.hpp
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/op_overload_159/mystring.hpp
+string
+-
+iostream
+-
+cstring
+-
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/op_overload_159/mystring.hpp
+iostream
+-
+string
+-
+

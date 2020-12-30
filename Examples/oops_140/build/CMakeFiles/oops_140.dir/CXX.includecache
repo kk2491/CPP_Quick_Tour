@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+.././account.hpp
+string
+-
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oops_140/account.cpp
+account.hpp
+-
+
+/home/kishor/GWM/Github_Repos/CPP_Quick_Tour/Udemy/oops_140/main.cpp
+account.hpp
+-
+iostream
+-
+
