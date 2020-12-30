@@ -6,6 +6,7 @@
 // no args constructor
 MyString::MyString()
     : str {nullptr} {
+    std::cout << "No args constructor called" << std::endl;
     str = new char[1];
     *str = '\0';
 }
@@ -13,7 +14,7 @@ MyString::MyString()
 // over loaded constructor
 MyString::MyString(const char *s) 
     : str(nullptr) {
-    
+    std::cout << "Over loaded constructor called : " << s << std::endl;
     if (s == nullptr) {
         str = new char[1];
         *str = '\0';
@@ -87,3 +88,23 @@ MyString &MyString::operator=(MyString &&rhs) {
 
     return *this;
 }
+
+std::ostream &operator<<(std::ostream &os, const MyString &obj) {
+    os << obj.str;
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, MyString &obj) {
+
+    char *buff = new char[1000];
+    is >> buff;
+    obj = MyString(buff);
+    delete [] buff;
+    return is;
+}
+
+
+
+
+
+

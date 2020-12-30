@@ -1,3 +1,6 @@
+## UNDER CONSTRUCTION
+
+
 **Compiler Errors**
 
 Syntax Error - Structure  
@@ -992,12 +995,323 @@ Copy Assignment operator
         -----------
 
     The one we are assigning is temporary means r value.
-    Move the data from temporary to a and delete the temporary.
+    Move the data from temporary to a and null the the temporary.
 
     MyString a("Object1")
     a = MyString("Object2")     
 
+    doubt : Go through move constructor and copy constructor again
+
+**Overloading operators as Member functions**
+
+Unary operators as member methods ++, --, - , !
+
+unary operators work on one operand.
+
+ReturnType Type::operatorOp();
+
+    Number Number::operator-() const;
+    Number Number::operator++();    // pre-increment
+    Number Number::operator++(int)  // post-increment (additional argument int)
+    bool Number::operator!() const; // 
+
+Examples:
+    Number n1(100);
+    Number n2 = -n1;    // n1.operator-()
+    n2 = ++n1           // n1.operator++()
+    n2 = n1++           // n1.operator++(int)
+
+No parameters - attributes accessed by this pointer (singles operand remember)
+
+MyString class unary - convert to lower case
+
+
+    MyString MyString::operator-() const {
+        char *buff = new char[len(this->str) + 1]
+        std::strcpy(buff, this->str)
+
+        for (each_letter in buff) {
+            buff[i] = tolower(each_letter)
+        }
+
+        MyString temp(buff)
+        delete [] buff
+        return temp
+    }
+
+
+
+**Binary operators - +, -, ==, !=, <, >**
+
+    ReturnType Type::operatorop(const &Type rhs)
+
+Examples:
     
+    Number Number::operator+(const Number &rhs);
+    Number Number::operator-(const Number &rhs);
+    bool Number::operator==(const Number &rhs);
+    bool Number::operator!=(const Number &rhs);
+    bool Number::operator>(const Number &rhs);
+    bool Number::operator<(const Number &rhs);
+
+    Number n1(200);
+    Number n2(300);
+
+    Number n3 = n1 + n2     ->  n1.operator+(n2)
+    Number n3 = n1 - n2     ->  n1.operator-(n2)
+    bool eq = (n1 == n2)    ->  n1.operator==(n2)
+
+
+MyString - Equality
+
+    bool MyString::operator==(const MyString &rhs) {
+
+        if (strcmp(this->str, rhs.str) == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    if (s1 == s2) 
+
+MyString - Binary addition - Concatenation
+
+    MyString obj_1("King")
+    MyString obj_2("Queen")
+    MyString obj_3
+    obj_3 = obj_1 + obj_2       // OK
+    obj_3 = obj_2 + obj_1       // OK
+    obj_3 = obj_1 + "Check"     // OK
+    obj_3 = "New" + obj_1       // Error - LHS should be object of the class
+
+    MyString MyString::operator+(const MyString &rhs) {
+        lhs_length = len(this->str)
+        rhs_length = len(rhs.str)
+
+        char *buff = new char[lhs_length + rhs_length + 1]
+
+        std::strcpy(buff, this->str)
+        std::strcat(buff, rhs.str)
+
+        MyString cont_string(buff)
+        delete [] buff
+
+        return cont_string
+    }
+
+
+**Overloading operators as Global functions**
+
+    ReturnType operatorop(const Type &lhs, const Type &rhs)
+
+    Number operator+(const Number &lhs, const Number &rhs)
+    Number operator-(const Number &lhs, const Number &rhs)
+    Number operator==(const Number &lhs, const Number &rhs)
+    Number operator<(const Number &lhs, const Number &rhs)
+
+    Number n1(100);
+    Number n2(200);
+    Number n3 = n1 + n2
+    Number n4 = n1 - n2
+
+
+    Global function is declared as Friend to class - to get easy access to the Class private attributes
+
+    member and non member functions - we can not have 2 in same
+
+doubt : CPP assumes primitive pointer not objects
+https://stackoverflow.com/questions/22146094/why-should-i-use-a-pointer-rather-than-the-object-itself
+
+doubt : unary - and binary - in case of operator overloadin
+
+
+**Overloading the stream extraction and insertion operator**
+
+doubt : difference between ostream, iostream
+
+<< and  >>
+
+For example :   Extraction
+                MyString larry("Larry")
+                cout << larry << endl;  -> Print "Larry"
+
+                Player hero("Larry", 10, 11)
+                cout << larry << endl;  -> Print Name: Larry, Health: 10, Experience: 10
+
+                Insertion
+                MyString obj1;
+                cin >> obj1
+
+If the stream insertion and extraction implemented as member function, the lhs should be class object
+    object << cout
+    object >> cin
+
+These operator overloading will be implmented as part of global function
+
+insertion  << --- To print on console
+extraction >> --- To read from console
+
+**insertion operator**
+std::ostream operator<<(std::ostream &os, const MyString &obj) {
+    os << obj.str       // If this is the friend 
+    os << obj.GetStr()  // If not declared as friend
+    return os
+}
+
+**extraction operator**
+std::istream operator>>(std::istream &is, MyString &obj) {
+    char *buff = new Char[1000]
+    is >> buff
+    obj = MyString(buff)
+    delete [] buff
+    return is
+}
+
+
+
+
+## Inheritance
+
+New classes from the existing class 
+New class contains the data and behaviors of the existing class
+Reuse of existing classes
+
+  Parent 
+    |
+    |
+    |
+  Child - Can be modified without modifying Parent
+
+
+Class Account {
+    Balance, Withdraw, Deposit
+}
+
+Class SavingsAccount : public Account {
+    Interest rate, Specialized withdraw
+}
+
+Class CheckingAccount : public Account {
+    Min balanace, Per check free, Specialized withdraw
+}
+
+Class TrustAccount : public Account {
+    Interest rate, Specialized withdraw window
+}
+
+Terminology:
+Single Inheritance - A new class from single base class
+Multiple Inheritance - A new class from multiple base class
+
+Base Class (parent class, super class):
+    The class being extended or inherited from
+
+Derived Class (child class, sub class):
+    Class being created from Base class
+    Inherits attributes and operations from base class
+
+            Base Class
+                ^
+                |
+                |
+           Derived Class
+
+
+Is a Relationship
+Generalization
+Specialization
+Inheritance or Class heirarchies
+
+Classes:
+    A                                   
+    B is derived from A
+    C is derived from A
+    D is derived from C
+    E is derived from D
+
+Generalization (Root class)
+    As we go down Generalization decreases
+    Specialization increases
+
+                  Person 
+                    |
+        Employee             Student
+            |
+Faculty   Staff   Admin    
+    
+
+**Inheritance and Composition**
+
+Inheritance - In relationship
+    Person is student or faculty
+    Circle is shape
+
+Composition - Has relationship
+    Person has account
+    Shape has dimensions
+
+doubt : Object oriented design course
+
+
+**Inheritance Syntax**
+
+class Base {
+    Base class members
+}
+
+Class Derived : access-specifier Base {
+    Derived class members
+}
+
+access specifiers - public, private, protected
+    default access specifier - Private
+
+Types of inheritance: (public, private, protected)
+
+public:
+    Most common
+    Establishes "is a" relationship
+
+todo (doubt) : private and protected inheritance
+
+class Account {
+    Withdraw()
+    Deposit()
+}
+
+class SavingsAccount : public Account {
+    UpdateInterest()
+}
+
+Account account_1;
+account_1.Withdraw();
+
+SavingsAccount sa_1;
+sa_1.Withdraw();
+
+When child object is created - Parent constructor is also called by default
+
+For example
+
+    Account
+
+    ----------
+    |
+    |
+    |
+    |
+    |
+    |
+
+
+**Protected Members and Class access**
+
+todo : configure vscode to build and compile CPP projects
+
+
+
+
 
 
 

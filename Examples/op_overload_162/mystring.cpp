@@ -6,6 +6,7 @@
 // no args constructor
 MyString::MyString()
     : str {nullptr} {
+    std::cout << "No args constructor called" << std::endl;
     str = new char[1];
     *str = '\0';
 }
@@ -13,7 +14,7 @@ MyString::MyString()
 // over loaded constructor
 MyString::MyString(const char *s) 
     : str(nullptr) {
-    
+    std::cout << "Over loaded constructor called : " << s << std::endl;
     if (s == nullptr) {
         str = new char[1];
         *str = '\0';
@@ -86,4 +87,52 @@ MyString &MyString::operator=(MyString &&rhs) {
     rhs.str = nullptr;
 
     return *this;
+}
+
+// Comparison operator
+bool MyString::operator==(const MyString &rhs) const {
+
+    if (std::strcmp(this->str, rhs.str) == 0) {
+        std::cout << "String values are equal" << std::endl;
+        return true;
+    } else {
+        std::cout << "String values are not equal" << std::endl;
+        return false;
+    }
+
+}
+
+// Unary -ve
+MyString MyString::operator-() const {
+
+    size_t len = std::strlen(this->str);
+    char *buff = new char[len + 1];
+    std::strcpy(buff, this->str);
+
+    for (size_t i = 0; i < len; i++) {
+        buff[i] = tolower(buff[i]);
+    }
+    
+    MyString temp(buff);
+
+    delete [] buff;
+
+    return temp;
+}
+
+
+// Binary addition
+MyString MyString::operator+(const MyString &rhs) const {
+
+    size_t len = std::strlen(this->str) + std::strlen(rhs.str);
+    char *buff = new char[len + 1];
+
+    std::strcpy(buff, this->str);
+    std::strcat(buff, rhs.str);
+
+    MyString temp(buff);
+
+    delete [] buff;
+
+    return temp;
 }

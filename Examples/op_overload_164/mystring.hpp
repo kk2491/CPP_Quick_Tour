@@ -3,8 +3,13 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 
 class MyString {
+
+    friend std::ostream &operator<<(std::ostream &os, const MyString &obj);
+    friend std::istream &operator>>(std::istream &is, MyString &obj);
+
     private:
     char *str;
 
@@ -19,6 +24,8 @@ class MyString {
     int GetLength() const;
     const char *GetStr() const;
 
+    // Operator overloading
+    // Assignment operator 
     MyString &operator= (const MyString &rhs);  // Copy assignment
     MyString &operator= (MyString &&rhs);
 };

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 
 class MyString {
     private:
@@ -19,8 +20,17 @@ class MyString {
     int GetLength() const;
     const char *GetStr() const;
 
+    // Operator overloading
+    // Assignment operator 
     MyString &operator= (const MyString &rhs);  // Copy assignment
     MyString &operator= (MyString &&rhs);
+
+    // Comparison operator
+    bool operator==(const MyString &rhs) const;
+    // Unary negation
+    MyString operator-() const;
+    // // Addition = concatenation
+    MyString operator+(const MyString &rhs) const;
 };
 
 #endif  // _MYSTRING_H_
