@@ -1307,7 +1307,229 @@ For example
 
 **Protected Members and Class access**
 
+Protected:
+    Accessible from base class
+    Accessible from classes derived from base class
+    Protected acts like private - no accessible from objects of base and derived class
+
+1. Public inheritance
+
+    Base Class              Access in derived class
+    public    : a           public    : a
+    protected : b           protected : b
+    private   : c           no access : c
+
+2. Protected inheritance
+
+    Base Class              Access in derived class
+    public    : a           protected : a
+    protected : b           protected : b
+    private   : c           no access : c
+
+3. Private inheritance
+
+    Base Class              Access in derived class
+    public    : a           private   : a
+    protected : b           private   : b
+    private   : c           no access : c
+
+
+Note: Child will have the private data from Base class, however it will not accessible. 
+
+
+**Constructors and Destuctors - Inheritance**
+
+When object is created from Derived Class:
+    1. Base class costructors is executed
+    2. Derived cass constuctor is executed
+
+When derived object is deleted
+    1. Derived class destructor is executed
+    2. Base class destuctor is executed
+    3. Both should free resources
+
+Derived class does not inherit
+    Base class constructor and destructor
+    Base class overloaded assignment operator
+    Base class friend functions
+
+Derived classes can invoke base class constructor, destrcutor etc
+
+doubt: explicit
+
+using Base::Base - This will inherit the non special constructors from base class
+
+class Base {
+    private:
+        int value;
+    public:
+        Base(int x) : value {value} {}
+}
+
+class Derived : public Base {
+    using Base::Base;
+    private:
+        int doubled_value;
+    public:
+        Derived(int x) : doubled_value {2 * x} {}
+}
+
+Derived object(100);
+
+without Base::Base:: and with overloaded constructor
+    Derived derived_obj(1000) - initialize Derived class constructor
+
+with Base::Base:: and without overloaded constructor
+    Derived derived_obj(1000) - initialize Base class constructor but derived class initialization is not done
+
+with Base::Base:: and witho overloaded constructor
+    Derived derived_obj(1000) - initialize Derived class constructor but no args constructor is called in base class
+
+
+**Passing arguments to base class constructor**
+
+while creating the Derived class object please note that base class constructor must be executed first.
+Derived class needs to specify which base class constuctor to be called.
+
+class Base {
+    private : 
+        int value;
+    public  : 
+        Base() : value {0} {
+            print "base no args constructor"
+        } 
+
+        Base(int x) : value {x} {
+            print "base overloade constructor"
+        }
+}
+
+class Derived {
+    private : 
+        int doubled_value;
+    
+    public  : 
+        Derived() : Base(), doubled_value {0} {
+            print "derived no args constructor"
+        }
+
+        Derived(int x) : Base(x), doubled_value {2 * x} {
+            print "overloaded no args constructor"
+        }
+}
+
+
+**Copy and Move Constructor and overloaded assignment operator**
+
+Slicing of base class from the derived object will be taken care by C++
+
+Notes on Copy/Move Operator and overload = assignment operator:
+1. Often it is not required to define our own copy, move and =
+2. If not defined in Derived, compiler will automatically create base class version
+3. If defined in Derived class, then needs to be defined explicitly in base class 
+4. Use deep copy in case of raw pointers
+
+class Base {
+    private : 
+    public : 
+        No args constructor
+        Overloaded constructor
+
+        Copy constructor 
+        Base(const Base &other) : this->value {other.value} {}
+
+        Copy Assignment = overloading
+        Base &operator=(const Base &rhs) {
+            if (this == &rhs) {
+                return *this
+            }
+            this.value = rhs.value
+            return *this
+        }
+}
+
+class Derived : public Base {
+    private : 
+    public :
+        
+        Copy Constructor            // Notice the slicing
+        Derived(const Derived &other) : Base(other), this->value {other.value} {}
+        
+        Copy assignment = overloading
+        Derived &operator=(const Derived &rhs) {
+            if (this == &rhs) { return *this }
+            Base::operator=(rhs)    // Slicing here
+            this->value = rhs.value
+            return *this
+        }
+}
+
+
+**Redefining Base Class methods**
+Derived classes can directly invoke base class methods
+Derived clasess can override or redefine base class methods
+POLYMORPHISM
+
+override - 
+Derived class having the same function signature as Base class
+but does different computation
+
+
+Static bindings:
+Methods will be called based on wat it sees during the compile time.
+
+Derived classes will calls derived methods, and base methods will be invoked using Base::Method()
+
+Base b;
+b.deposit(100)  // Base - Deposit
+
+Derived d;      
+d.Deposit(200)  // Derived - Deposit
+
+Base *ptr = new Derived()   
+ptr->Deposit(2000)  // what ???
+
+
+**Multiple Inheritance**
+Derived class is inherits from 2 or more Base classes at the same time
+
+class DerivedClass : public BaseClass1, public BaseClass2 {
+
+}
+
+Better to Avoid, as it increases the complexity
+
+doubt : static constexpr 
+
+doubt : is std::string is same as *char ?? - inheritance_179 code - default values for constructor
+
+
+
+
+
+
+
+
+
+
+
+
+**VSCODE**
+
 todo : configure vscode to build and compile CPP projects
+https://code.visualstudio.com/docs/cpp/config-linux
+
+Run single file             : 
+Run multiple files codebase :  
+
+tasks.json - run build
+launch.json - run debug
+c_cpp_properties.json - update include and cpp standard etc
+
+
+Cmake : http://derekmolloy.ie/hello-world-introductions-to-cmake/
+
+
 
 
 
