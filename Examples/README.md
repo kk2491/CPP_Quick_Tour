@@ -1503,6 +1503,276 @@ doubt : static constexpr
 
 doubt : is std::string is same as *char ?? - inheritance_179 code - default values for constructor
 
+doubt: Remove this warning
+warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings]
+     static constexpr char *default_name = "Un-named savings account";
+
+
+**Polymorphism**
+1. Compile Time Polymorphism (early binding, static binding) - before program executes
+2. Run time polymorphism (late binding, dynamic binding)
+
+Overloaded functions - compile time
+Overloaded operator - compile time
+
+defaut binding - Static binding
+
+Inheritance
+Base class pointer or references
+virtual functions
+
+                                        Polymorphism
+
+                Compile Time                                Run time 
+
+Function overloading    operator overloading            Function overriding
+
+doubt:
+error: passing ‘const Base’ as ‘this’ argument discards qualifiers [-fpermissive]
+This is because te object is agument is const and it is again being passed to some function which is not const.
+Hence the compiler thinks, the object would be modified in the new function.
+
+doubt:
+error: invalid initialization of reference of type ‘const Base&’ from expression of type ‘Base*’
+When argument is normal object but you are passing address / or pointer in function call
+
+Dynamic polymorphism - **ABSTRACTION**
+    Inheritance
+    Base Class ptr or reference
+    Virtual functions
+
+
+**Using base class pointer**
+
+class Base {
+    function()
+}
+
+class Derived_A {
+    function()
+}
+
+class Derived_B {
+    function()
+}
+
+class Derived_C {
+    function()
+}
+
+Base *ptr_1 = new Base()
+Base *ptr_2 = new Derived_A()
+Base *ptr_3 = new Derived_B()
+Base *ptr_4 = new Derived_C()
+
+now when each object / ptr calls function function(), 
+function corresponding to class derived will be executed.
+
+Abstraction - General thinking, if new child needs to be added there is no need of modifying the complete code. Just add the child class, thats it.
+
+**Virtual Functions**
+Virtual keyword
+if no virtual keyword - statically bounded
+virtual functions are overriden
+
+Base class - Virtual keyword to the function
+Derived class - Virtual keyword is implicit (it is better to mention)
+
+class Base {
+    public:
+    virtual void Withdraw(double amount)
+}
+
+class Derived {
+    public:
+    virtual void Withdraw(double amoubt)
+}
+
+Function prototype and return must match inorder to override the base class function
+
+needs to be called via base class pointer or reference
+
+**Virtual Destructors**
+
+Virtual functions need to have a virtual destructors
+
+Else we get warning:
+warning: deleting object of polymorphic class type ‘Account’ which has non-virtual destructor might cause undefined behaviour [-Wdelete-non-virtual-dtor]
+
+if the derived class pointer is destructed by deleting base class pointer, then it results in unexpected behavior.
+
+Virtual functions - virtual destructors
+
+Adding normal destructor will call Base desturctors, hence the memory is not cleaned up for the child objects
+
+virtual in Base class destructor is sufficient, good practice to update in derived classes' destructors as well
+
+**Using the override specifier**
+
+override - makes sure the derived class function should match with the base class function.
+
+Without override :
+if the function signature is different - no compiler error is produced. Hence it will be statically bound.
+
+Base {
+    public : void Display() const;
+}
+
+Derived {
+    public : void Display();
+}
+
+Base ptr_1 = new Base()         == calls Base Display
+Base ptr_2 = New Derived()      == calls Base Display
+Derived ptr_3 = New Derived()   == calls Derived Display
+
+with override - difference in signature throws compiler error
+
+**Using final specifier** 
+
+class level - prevents the class from being derived
+    Better compiler optimization - to avoid slicing 
+
+Method level - prevents virtual method from being overriden in derived classes
+
+
+**class level**
+
+class ClassName final {
+    public:
+}
+
+class Derived final : public Base {
+    public:
+}
+
+compile error will be thrown if derived class is created from final class
+
+**method level**
+
+ Class A (Base 1)
+    |
+ Class B (Derived from A)
+    | 
+ Class C (Derived from B)
+
+
+Class A {
+    public:
+    virtual void DoSomething();
+}
+
+Class B : public A {
+    public:
+    virtual void DoSomething() final;
+}
+
+Class C : public B {
+    public:
+    virtual void DoSomething(); // Compiler error - final terminates the virtual function overriding
+}
+
+**Base Classes references**
+
+Base class references can also be used in place of pointers
+
+Account account_obj;
+Account &account_ref = account_obj;
+
+SavingsAccount sa_obj;
+Account &sa_ref = sa_obj;
+
+Passing objects as reference - based on the class the virtual function would be called 
+
+Creating base class reference - which is referring to derived class
+
+**Pure virtual functions and abstract classess**
+
+**Abstract class**
+Class that can not be instantiated. Base classes.
+Abstract base classes
+
+Example :   Shape shape_obj;    Not possible
+            Shape *shape_obj;   Not possible
+            Shale *shape_ptr = new DerivedClass()  possible
+
+**Concrete class**
+Used to instantiate objects from. Basically Derived classes.
+Member functions need to be defined.
+
+Abstract classes are too generic.
+
+Abstract class - must contain a virtual function to make it abstract.
+
+Same as virtual function, with assignment 0.
+
+no implementation will be provided.
+
+pure virtual function -
+    Used to make class abstract 
+    assigned to 0 in the function declaration
+    No definition / implementation provided in the base class as it will be done in derived class
+    Derived classes must override the base class
+    if the derived classes dont override the derived will be considered as abstract as well
+
+    virtual void draw() = 0
+    virtual void CreateAccount() = 0
+
+Shape shape_obj                 // Error
+Shape *shape_ptr = new Shape()  // Error 
+
+Abstract error : 
+error: cannot declare variable ‘shape_obj’ to be of abstract type ‘Shape’
+error: invalid new-expression of abstract class type ‘Shape’
+
+error: undefined reference to `vtable for Circle'
+happens when definition is not provided for desturctor (only prototype is there)
+
+
+**Abstract classes as Interfaces in C++**
+
+doubt : Interfaces classes
+
+This is not base class, this is a abstract class with only pure virtual function. This class canbe added in any class heirarchy and can be used by derived claases for common tasks.
+
+class as an interface:
+    Abstract classe with only pure virtual functions
+    provides general set of services - print class data etc
+    Each subclass is free to implement the serives needed.
+
+pending : 
+A class which can be used 
+
+
+class Printable {
+    friend ostream &operator<<(stream &os, const Printable obj) {}
+    public:
+    virtual void print(ostream &os) const = 0;
+    virtual ~Printable() {}
+}
+
+ostream &operator<<(stream &os, const Prntable &obj) {
+    obj.print(ostream &os);
+    return os;
+}
+
+
+Any class needs to be Printable, should be derived from Printable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
