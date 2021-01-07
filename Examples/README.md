@@ -1759,6 +1759,366 @@ ostream &operator<<(stream &os, const Prntable &obj) {
 
 Any class needs to be Printable, should be derived from Printable.
 
+Abstract class with pure virtual functions.
+
+Error : undefined reference to `main'
+
+
+
+
+
+
+## Smart Pointers
+
+**Issue with Raw pointers**
+Allocate and deallocate and manage the lifetime - manually
+
+Errors:
+Uninitialized pointers
+Memory leaks
+Dangling pointers
+Not exception safe
+
+Who owns the pointer ?
+when the pointer should be deleted ?
+
+Smart pointers
+    Object - Template classes
+    Only point to to Heap
+    Automatically delete when not needed
+    Adhere to RAII principles
+    Unique,Shared, Weak, Auto(deprecated)
+
+Implemented using template classes (doubt) todo
+
+    wrapper around a raw pointer
+    pointer arithmetic is not possible
+    overloaded constructors
+        dereference
+        member selection
+    Can have custom deleters
+
+Declare:
+std::smart_pointer<Some_Class> ptr = ;
+
+**RAII - Resource Allocation Is Initialization**
+    Allocated on the stack
+    Idiom / pattern used in Software design based on container object lifetime
+    Resource acquition
+        Open a file
+        allocate memory
+        Acquire a lock
+    
+    Is Inialization
+        Happens during object creation - constructor 
+
+**Unique Pointer**
+    Simple and efficient 
+    Strong ownership relation
+    Point to an object on Type T on heap
+    Unique - because we cant have 2 unique pointers pointing to same object on heap
+    Can not be copied, however can be moved (null the existing pointer and move the object to new pointer)
+    when pointer is destroyed what it points to is automatically destroyed
+
+
+std::unique_ptr<int> pt {new int {100}}
+std::unique_ptr<int> pt = new int(100)
+print *p1   // 100
+*p1 = 200   
+print *p2   // 200
+Automatcally deleted 
+
+
+Note:
+stack address   - 0x7fffc9da43dc
+heap addresss   - 0x1987c20
+
+When tried to copy : error: use of deleted function ‘std::unique_ptr<_Tp, _Dp>& std::unique_ptr<_Tp, _Dp>::operator=(const std::unique_ptr<_Tp, _Dp>&) [with _Tp = Account; _Dp = std::default_delete<Account>]
+
+doubt : std::move - move the unique pointer from one to another.
+The one assigned to becomes null pointer, but does that get destructed ?
+
+stackoverflow question (doubt)
+smart_pointers_199/test.cpp 
+std::move unique pointer destruction called only once 
+
+Declaration examples:
+
+std::unique_ptr<Account> account_1 {new Account{1000}}
+std::unique_ptr<Account> account_2 = std::make_unique<Account>("check",1000, 200)
+auto account_3 = std::make_unique<Account>("tong", 100)
+
+todo 
+doubt : practice unique pointer 
+
+
+**Share Pointer**
+
+doubt : in shared pointer when copy is create and goes out of the score, does the control go to the destructor ?
+
+    Shared ownership model of the heap object 
+    Multiple pointers can point to the same heap memory 
+    can be assigned and copied 
+    can be moved 
+    When use count is 0, object is destroyed from the heap memory
+
+Syntax
+
+std::shared_ptr<int> p1 {new int{100}}
+
+std::shared_ptr<Account> acc = std::make_shared<Account>(100,200)
+
+std::shared_ptr<Account> acc {new Account{100, 200}}
+
+shared pointers are more efficient 
+
+
+**Weak Pointer**
+
+Provides a non owning weak reference.
+Points to an object on heap. 
+Does not own the relationship. (shared pointer owns the relationship)
+Created using shared pointer
+does not affect the reference use count. (shared pointer if there use count is non zero)
+used to prevent the strong reference cycle whch could prevent the object from being deleted
+
+2 Classes - with 1 to 1 relationship
+circular or cyclic reference 
+
+
+      Stack                Heap
+
+    pointer_a           object of A (this has a pointer pointing to object of B)
+
+    pointer_b           object of B (this has a pointer pointing to object of A)
+
+
+When pointer_a goes out of scope, shared pointer checks for use count and finds class object has use count for pointer_b.
+
+And does not destroy the object. Only pointers in the stack gets destroyed but heap memory does not.
+
+
+
+**Custom Deleters**
+
+Skip : todo : complete custom deleters
+
+todo : Lambda function
+
+
+
+## Exception Handling
+
+Dealing with extradinary situations
+Should be used in synchronous code not asynchronous code 
+
+    Insufficient resource
+    missing resources
+    invalid operations
+    range violation
+    underflows and overflows
+    illegal data
+
+**Terminology**
+
+Exception : and object or primitive type which signals error condition has occured. What happened ?
+
+Throwing and Exception : 
+code detects when and where will the error occurs. throw and exception describing the error to next part which knows how to handle the error
+
+Catching the Exception :
+Code that handled the exception
+
+Syntax
+
+*throw* 
+variable thrown when the possible error occurs
+
+*try*
+Block of code needs to be executed
+
+*catch*
+Catch the error condition and handle it
+
+when denominator = 0
+int / int       - crash
+float / int     - inf 
+
+when denominatr and numerator 0
+float / int     - nan
+
+todo: static_case<double>
+
+**Throwing exception from a function**
+
+double function(num, denom) {
+    if denom == 0:
+        throw 0
+    return avg
+}
+
+int main() {
+    try {
+        avg = function(num, denom)
+    } 
+    catch {
+        print error statement
+    }
+}
+
+
+if the throw is not caught using try and catch:
+run time error : terminate called after throwing an instance of 'int'
+Aborted (core dumped)
+
+
+**Handling multiple exceptions**
+
+double function(num, denom) {
+    if denom == 0:
+        throw 0
+    if denom < 0 or denom < 0
+        throw std::string("negative")    
+    return avg
+}
+
+int main() {
+    try:
+        avg = function(num, denom)
+    // Multiple catch block
+    catch(int &e)
+    catch(std::string &s)
+
+    // Catch all - to catch all the missed throw
+    catch(...) {
+        catch all block
+    }
+}
+
+
+**Stack Un-winding**
+
+How function call traces back to the try and catch block.
+Function are thrown off of the stack which results in the data loss as the local variables would be cleared
+
+function_1 () {
+    start
+    function_2()
+    end     - not executed
+}
+
+function_2() {
+    start
+    function_3()
+    end     - not executed
+}
+
+function_3() {
+    start
+    function_4()
+    throw 100
+    end     - not executed
+}
+
+main () {
+    try:
+        function_1()
+    catch:
+        print error     - executed
+}
+
+**Creating user defined exception classes**
+
+class Exception1 {};
+
+class Exception2 {};
+
+function() {
+    if (condition_1)
+        throw Exception1
+    if (condition_1)
+        throw Exception2
+    normal  
+}
+
+main() {
+    try {
+        function()
+    }
+    catch (const Exception_1 &ex) {
+        print("Exception 1")
+    }
+    catch (const Exception_2 &ex) {
+        print("Exception 2")
+    }
+}
+
+
+**Class Level Exceptions**
+
+Exceptions can be thrown within class 
+
+* Method :
+
+* Constructor : Constructor may fail. Constructor do not return any value. (file opening in constructor). If the object can not be realized. 
+
+* Destructor : Do no throw exception from destructor. Marked no except by default. Catch block will never be reached.
+
+todo: coding 
+
+Remember we are throwing the class object (not the member function in exception class)
+
+
+**C++ Standard Exception Class Heirarchy**
+
+Default keyword in Constructor 
+
+class ExceptionClass : public std::exception {
+    public:
+    ExceptionClass() noexcept = default;
+    ~ExceptionClass() = default;
+
+    virtual const char* what() const noexcept {
+        std::cout << "Illegal balance" << std::endl
+    }
+}
+
+todo : try runtime error, out of bound ... etc etc 
+
+
+
+## IO and Streams
+
+cerr - error msg
+clog - logging msg 
+
+redirecting io
+
+iostream    - input and output from/to streams
+fstream     - input and output from/to file streams
+iomanip     - manipulators used to format stream io
+
+
+class 
+ios         - formatter and unformatted io
+ifstream    - high level input operations on file based streams
+ofstream    - high level output operations on file based streams
+fstream     - high level i/o operations on file based streams
+stringstream- high level i/o operations on memory based streams
+
+cin     - standard input device (keyword) - instance of istream  
+cout    - output device (console) - instance of ostream
+cerr    - output device (console) - instance of ostream
+clog    - 
+
+
+**Stream manipulators**
+
+
+
+
+
+    
 
 
 
@@ -1775,8 +2135,12 @@ Any class needs to be Printable, should be derived from Printable.
 
 
 
+RTTI 
+Vtable 
 
+STL containers : Vector, Set and Map
 
+STL
 
 
 
