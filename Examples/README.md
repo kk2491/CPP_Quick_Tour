@@ -2114,22 +2114,628 @@ clog    -
 
 **Stream manipulators**
 
+Common stream manipulators
+
+Boolean
+    boolalpha, noboolalpha
+
+Integer
+    dec, hex, oct, showbase, noshowbase, showpos, noshowpos, uppercase, nouppercase
+
+Floating point
+    fixed, scientific, setprecision, showpoint, noshowpoint, showpos, noshowpos
+
+Field width, justification, fill
+    setw, left, right, internal, setfill
+
+Others
+    endl, flush, skipws, noskipws, ws
+
+
+**Stream manipulators - Boolean**
+
+By default 0 or 1
+
+std::boolalphas - true or false 
+
+std::cout << std::boolalpha
+
+using method
+std::cout.setf(std::ios::boolalpha)
+std::cout.setf(std::ios::noboolalpha) -- error - doubt
+
+std::cout << std::resetiosflags(std::boolalpha) -- error - doubt 
 
 
 
+**Stream manipulators - Integer**
+
+default 
+    dec - base 10
+    noshowbase - no prefix used to show hexa and octal
+    nouppercase - 
+    noshowpos 
+
+std::cout << std::dec << num << std::endl
+
+std::cout << std::hex << num << std::endl
+
+std::cout << std::oct << num << std::endl
+
+once set, the set base will used for the insertion from that line. it persists.
+
+showbase : it persists.
+    ox - for hexadecimel
+    o  - for octa
+       - for decimel
+
+
+std::cout.setf(std::ios::showbase)
+std::cout.setf(std::ios::uppercase)
+std::cout.setf(std::ios::showpos)
+
+
+std::cout << std::resetiosflags(std::ios::showbase)
+std::cout << std::resetiosflags(std::ios::uppercase)
+std::cout << std::resetiosflags(std::ios::showpos)
+
+
+**Stream manipulators - Floating point number**
+
+default:
+    setprecision - 6 
+    fixed - not fixed number of digits after the decimel point 
+    noshowpoint - no 0s after floating point
+    nouppercase
+    noshowpos
+
+    setprecision - number of digits to be displayed before E 
+
+*   when setprecision is applied with fixed : precision is applied after the decimel point 
+*   when setprecision is applied with scientific : precision is applied to the left of E (doubt - left of E complete or left of E decimel point)
+*   when uppercase is used in scientific e to E 
+
+iomanip header needs to be included 
+
+unsetf()
+
+
+
+**Stream manipulators - algin and fill**
+
+std::left std::right - justified 
+std::setw(10) - set width
+setfill('-') applied only when setw()
+
+
+
+**Reading from a text file**
+
+Reading from files - 
+Writing to files 
+
+
+*Input files*
+#include fstream
+declare fstrem or ifstream object 
+connect to the file 
+read file via stream
+close the stream 
+
+include fstream -> fstream or ifstream object -> connect to file -> read file -> close file 
+
+std::fstream in_file ("file.txt", std::ios::in)
+
+std::fstream in_file ("file.txt", std::ios::in | std::ios::binary)
+
+doubt : reading binary data 
+
+fstream - to read and write 
+ifstream - only for reading 
+
+std::fstream in_file ("file.txt")
+
+std::fstream in_file ("file.txt", std::ios::binary)
+
+
+std::ifstream obj
+std::string filename 
+obj.open(filename)
+obj.open(filename, std::ios::in)
+
+if (obj.isopen()) -- to check if the file is / can be opened 
+
+obj.close()
+
+getline(infile, line)
+
+
+========
+if (check if file is open) {
+
+    while(!obj.eof()) {
+        string s;
+        std::getline(obj, s)
+        print s
+    }
+} else {
+    not open
+}
+
+obj.close()
+========
+
+or this can be used  
+while(std::getline(obj, str))
+
+
+fstream object getline - in_file.getline() - doubt
+
+
+**Writing output to a text file**
+
+fstream ofstream
+
+include fstream -> fstream or ofstream object -> connect to file -> write file -> close file 
+
+by default : CPP will create the file if not exists
+by default : if exists, contents will be removed or truncated unless mentioned 
+
+std::fstream out_file("file_path", std::ios::out)
+std::fstream out_file("file_path", std::ios::out, std::ios::binary)
+
+by default - opened in text mode
+
+std::ofstream out_file("file_path")
+std::ofstream out_file("file_path", std::ios::binary)
+
+std::ofstream outfile,
+std::string file;
+outfile.open(file)
+outfile.open(file, std::ios::binary)
+
+std::ofstream outfile("file_path", std::ios::trunc) - removes the content of the file when opening
+
+std::ofstream outfile("file_path", std::ios::app) - append on each write 
+
+std::ofstream outfile("file_path", std::ios::ate) - seak to end of stream while opening 
+
+if (outfile.isopen()) - true if open and good to write 
+
+if (outfile)    - true if open and good to write 
+
+
+
+**Using String Streams**
+
+what is stringstreams - sstreams - doubt 
+
+#include sstream 
+stringstream, ostringstream, istringstream
+connect to std::string 
+
+int num_1
+double num_2
+string str 
+std::string main_string = {"Hello 100 100.100}
+std::istringstream iss = main_string
+iss >> str >> num_1 >> num_2 
+
+int num_1 = 100
+double num_2 = 200
+string str = "KK"
+std::string main_string = {"Hello 100 100.100}
+std::istringstream oss;
+oss << str << " " << num_1 << " " << num_2 
+std::cout << oss.str() << std::endl
+
+
+Exmaple : validating input with stringstream
+Ask user to enter data (excepted int)
+read it to a stringstream
+extract the stringstream to integer 
+successful if integer is entered 
+
+
+## STL - Standard Template Library
+
+#### What is STL 
+reusable, adaptable, generic classes, functions
+implemented using C++ templates 
+
+doubt : C++ templates 
+
+**Elements of STL**
+1. Containers - collection of objects or primitive types 
+    array, vector, deque, stack, set, map etc 
+2. Algorithms - functions for processing the sequence of elements from the containers 
+    find, max, count, accumulate, sort 
+3. Iterator - Generate sequence of elements from containers 
+    forward, reverse, by value, by reference, constant 
+
+
+Example:
+    vector 
+    sort(vector.begin(), vector.end())
+    reverse(vector.begin(), vector.end())
+    sum = accumulate(vector.begin(), vector.end(), 0)
+
+**Types of Containers**
+
+1. Sequence Containers
+    array, vector, list, forward_list, deque
+
+2. Associative Containers
+    set, multi set, map, multi map
+
+3. Container adapters
+    stack, queue, priority queue
+
+**Types of Iterators**
+
+1. Input Iterator - frm container to the program 
+
+2. Output Iterator - from program to container
+
+3. Forward Iterator - 
+
+4. Bidirectional Iterator 
+
+5. Random Access Iterator 
+
+**Types of Algorithms** (60 algorithms are available)
+
+1. Non modifying 
+
+2. Modifying 
+
+
+
+**Generic Programming with Macro**
+
+1. Generic Programming - consider squaring a number, irrespective of the datatype the function should return the square root. However the compiler is static datatype mapped. so it is not possible.
+
+2. Macros 
+    # define
+    C++ preprocessor directives
+    no type information
+    Just a substitution
+        #define MAX_SIZE 100
+
+3. Function templates 
+    Generic programming with function templates 
+    plugging in any data type 
+    compiler generates the appropriate functions / class frm the blueprint 
+    If function call is not there, then the code is not generated by the compiler
+    When function call is updated, it takes the data type and generates the function/code as per the datatype passed 
+
+    doubt : swap 2 strings using pass by reference, not working
+
+4. Class templates 
+
+    template <typename T>
+    class Item {
+        private:
+        std::string name;
+        T value;
+
+        public:
+        setData(std::string name, T value) {
+            name = name;
+            value = value;
+        }
+        T GetValue() {
+            return value;
+        }
+    }
+
+    Item<int> obj{"KK", 100}
+    Item<double> obj{"TK", 100.12}
+
+    template <typename T1, typename T2>
+    class SomeClass {
+        T1 attrib_1;
+        T2 attrib_2;
+    }
+
+    #inclue <utility>
+
+    std::pair<std::string, int> -- same as SomeClass above
+
+Best Practice : Put the template classes in .h file 
+
+
+5. Creating a Generic Array Template Class
+
+    parameters can be created as template
+    for example, in Array class size of the array is given as below
+
+    template <int N>
+    class Array {
+        int size {N};
+        int arr[N] {};
+    }
+    Array<5> arr;
+
+
+When the number of elements are fixed it is efficient to use arrays instead of vectors
+
+    doubt : understand this completely 
+
+    use std::array when size is known
+
+### Introduction to STL containers 
+
+Data structures that can store any type (almost)
+    template based classes
+
+Each container has member functions
+    some are common 
+    some are specific
+
+Each container has its own header 
+    #include <container>
+
+Common functions
+    Constructor default
+    Oveloaded constructor
+    Copy constructor
+    Move Constructor 
+    Destructor 
+    Copy assignment
+    Move assignment 
+    size 
+    empty 
+    insert 
+    operator < <=
+    operator > >=
+    == !=
+    swap
+    erase 
+    clear 
+    begin and end 
+    rbegin and rend 
+    cbegin and cend 
+    crbegin and crend 
+
+Types of elements can be stored in Containers
+    All primitives 
+    Elements should be copyable and assignable (implement copy and move assignment)
+    Movable for efficiency 
+    Must be able to compare the elements (implement compare operators if not defined)
+
+
+### Introduction to STL Iterators 
+
+    Allows us to think as sequence of elements 
+    Work like pointers 
+    implemented as template classes 
+
+    Must be declared based on the container type 
+    std::vector<int>::iterator it1;
+    std::map<std::string, std::int>:: iterator it2;
+    std::list<std::string>::iterator it3;
+    std::set<double>::iterator it4;
+
+Example :
+    std::vector<int> vec {1, 2, 3}
+    std::vector<int>::iterator it_begin = vec.begin();  -- This points to the first elemet in vector 
+    std::vector<int>::iterator it_end = vec.end();  -- This points to the next element of last element 
+
+Iterators operator
+    ++it        pre increment
+    it++        post increment 
+    it = it1    
+
+iterator 
+reverse_iterator (doubt)
+
+Types of iterators
+    begin()     end()       - iterator
+    cbegin()    cend()      - const iterator
+    rbegin()    rend()      - reverse iterator 
+    crbegin()   crend()     - const reverse iterator 
+
+const_iterator - When tried to change the value which is pointed by const iterator 
+
+error: assignment of read-only location ‘cit1.__gnu_cxx::__normal_iterator<_Iterator, _Container>::operator*<const int*, std::vector<int> >()
+
+std::vector<int> vector_1;
+std::vector<int>::const_iterator cit = vector_1.begin() is same as 
+auto cit = vector_1.cbegin()
+
+reverse iterator 
+increamenting means decrementing and vice versa
+
+std::list and std::set
+iterator = iterator + int - does not work - error - no operand
+
+
+### Introduction to STL Algorithms
+
+Sequence of elements with iterator 
+
+doubt : lambda 
+
+#include <algorithm>
+
+sometimes iterator becomes invalid 
+
+a. find algorithm
+    find(vec.begin(), vec.end(), 3)
+    returns iterator to the index else return vec.end() - iterator pointing to the end of the container 
+
+    works for vector, list, 
+    
+    for primitive time no need to implement equality operator 
+    for user defined classes equality needs to be defined separately 
+
+    auto loc = std::find(vector.begin(), vector.end(), 10)
+    if (loc != vector.end()){
+        element found - value *loc
+    }
+
+    auto loc = std::find(vector.begin()+4, vector.end()-4, 10)
+    if (loc != vector.end()){
+        element found - value *loc
+    }
+
+    uses equality operator - for user defined classes / datatypes 
+
+    give start, end and what to find 
+
+
+b. count algorithm
+    num = std::count(vector.begin(), vector.end(), to_count)
+
+c. count_if algorithm
+    count only if the condition satisfies - lambda function
+
+    num = std::count(vector.begin(), vector.end(), [](int x) {return (x >= 10);})
+
+d. replace 
+    std::replace(vector.begin(), vector.end(), 1, 100)
+
+    1   - to be replaced
+    100 - to be replaced with
+
+e. all_of 
+    checks if all the elements in the vector are satisfying the condition
+
+f. string_transform_test
+    std::transform(str.begin(), str.end(), str.begin(),::toupper);
+    where to start, when to stop, where to start copying
+
+doubt: lambda C++ - very important 
+
+b. for_each 
+    applies a function for each element in the container 
+    function must be provided to the algorithm
+        functor (function object)
+        function pointer
+        lambda expression (C++11)
+
+
+
+    a. functor (function object)
+        struct SquareFunctor {   // This can be class with function operator defined
+            void operator() (int x) {
+                std::cout << x * x << std::endl;
+                return;
+            }
+        }
+
+        SquareFunctor square;
+        std::for_each(vec.begin(), vec.end(), square)
+
+
+    b. function pointers -- doubt - did not understand
+        void square(int x) {
+            std::cout << x * x << std::endl;
+        }
+        std::for_each(vec.begin(), vec.end(), square)
+
+    c. lambda functions
+        std::for_each(vec.begin(), vec.end(), [](int x) {std::cout << x * x << std::endl;})
+
+
+### Sequence Container Array
+    #include <array>
+    fixed size - should be known during compile time 
+    direct element access - time to access element is independant of the number of elements in the array
+    access to the raw array address 
+    iterator and algos 
+
+    use STL array when fixed array needed in the code
+
+    Important : cppreference.com
+
+    sort - doubt - ascending and descending 
+
+    note: std::min - std::max - finds the min and max of 2 numbers 
+
+    minmax_element - first is min and second is max
+    doubt : the data type of the iterator - pair ?
+    
+    note : index
+    auto max_index = std::distance(std::begin(curvatures), max_it.second);
+
+    adjacent_find - checks if there is 2 adjacent same values 
+
+    std::accumulate - from #include<numeric>
+
+
+### Sequence Container Vector 
+
+    #include <vector>
+
+    dynamic sized arrays - expand contrast 
+
+    direct element access - constant time 
+
+    rapid insertion and deletion at the back - constant time 
+
+    however insertion and deletion at the start and middle - linear time 
+
+    push_back   - efficient
+    push_front  - not efficient 
+    pop_back    - 
+
+    size - currently being used 
+    capacity - allocated in memory - at this pont the vector gets extended dynamically 
+
+    emplace_back and push_back - difference - doubt 
+
+    swap - type should be same, but size can be different 
+
+    vector.insert(iterator, element_to_be_inserted)
+
+
+    important : always overload less than and equality operator when using our own use defined classes or data types. because STL algorithms use those 2 operators.
+
+    std::vector<int> vector_1 {1, 2, 3} - creates vector with 3 elements
+    std::vector<int> vector_2 (10, 100) - creates 10 elements of value 100 - This is the overloaded constructor in vector class 
+
+
+    whenever we exceed the capacity it would be doubled.
+    For example
+        vector {1, 2, 3, 4}
+        size = 4, capacity = 4
+        push_back(5)
+        size = 5, capacity = 8
+
+    vector.shrink_to_fit() - amount of storage allocated exactly to the vector size
+    capacity becomes 5 
+
+    vector.reserve(100) - Reserve contiguous amount of memory 
+
+    std::copy(vector_1.begin(), vector_1.end(), vector_2.back_inserter(vector_2))
+    note that vector_1 is being copied to vector_2
+    Resultant vector_2 = vector_2 + vector_1
+
+    std::copy_if(vector_1.begin(), vector_1.end(), vector_2.back_inserter(vector_2),
+                [](int x){return some_condition})
 
     
+    transform is element-wise
+    std::transform(vector_1.begin(), vector_1.end(), vector_2.begin(),                      std::back_inserter(v3), [](int x, int y) {return x * y})
 
 
 
+### Sequence Container Deque
 
+double ended Queue
+#include <deque>
 
+elements are not stored in contiguous memory 
 
+Can expand and decrease dynamically 
 
+Rapid insertion of elements at front and back - constant time
 
+Insertion of elements at the middle - linear time 
 
-
-
+doubt - insertion of elements in deque - how to do ?
 
 
 
