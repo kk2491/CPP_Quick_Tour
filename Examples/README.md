@@ -2738,7 +2738,190 @@ Insertion of elements at the middle - linear time
 doubt - insertion of elements in deque - how to do ?
 
 
+### Sequence Container List and Forward List
 
+
+#### List
+elements are not stored in contiguos memory 
+no direct access to random elements 
+very efficient for inserting and deletion - 
+
+    #include <list>
+
+doubly linked list 
+
+each element has reference to previous and next element in doubly linked list 
+
+(in sinlge linked list - has reference only to next element)
+
+remove the element - relink the other elements around it - faster 
+
+use when - lost of insertion and deletion from container and random access is nt much needed.
+
+list {1, 2, 3, 4, 5}
+list.resize(2)
+(1, 2)
+list.resize(5)
+(1, 2, 0, 0, 0)
+
+
+#### Forward List
+Dynamic size 
+singly linked list - only in forward direction
+less overhead when compared to doubly linked list 
+
+random access is not supported 
+rapid insertion and deletion is efficient - constant time 
+reverse iterators are not available 
+
+Only front no back
+
+    #include <forward_list>
+
+    std::forward_list<int> {1, 2, 3, 4, 5}
+
+    push_front()
+    pop_back()
+    emplace_front()
+
+    size() -- Method is not available
+
+    it = iterator to element value 3
+    insert_after(it, 100)
+    {1, 2, 3, 100, 4, 5}
+
+    emplace_after()
+    erase_after()
+
+    ++ and -- is not possible on list 
+
+    resize - removes the extra elements going out of bound
+
+    doubt: check what happens when there is no default constructor and resize the list 
+
+    doubt: iterator is not going invalid after erasing the element pointed by the iterator 
+
+
+### Associative Containers - Sets
+
+fast retrieval using key 
+Sets and Maps 
+Implemented as balanced binary tree or hash set 
+
+Sets:
+    std::set                    - unique auto sorted
+    std::unordered_set          - not auto sorted
+    std::multiset               - duplicate allowed auto sorted
+    std::unordered_multiset     - duplicate allowed not auto sorted
+
+note: no duplicate elements are allowed 
+
+set - elements will be sorted (<)
+
+note: no concept of front and back
+
+use insert --- note 
+
+set_object.insert(obj)
+returns std::pair<iterator, bool>
+    first  - iterator to the inserted item or duplicated item
+    second - bool success or failed 
+
+set_obj.erase(element_value)
+set_obj.erase(iterator)
+
+set_obj.count() - number of elements will be 1 if exists 
+
+set_obj.clear()
+
+set_obj.empty()
+
+
+**Multi set**
+ordered by key, allows duplicate elements 
+
+**unordered set**
+Elements cant be modified 
+    must be erased and inserted 
+
+no reverse iterators allowed 
+
+**unordered multi set**
+Elements cant be modified 
+    must be erased and inserted 
+
+no reverse iterators allowed 
+
+
+Note: set_obj.find(obj) - this is based on the < (less than) overloaded operator
+    So when using user defined data types or classes be careful
+
+
+
+### Associative Containers - Maps
+
+std::map
+std::unordered_map
+std::multimap
+std::unordered_multimap
+
+fast retrieval using key 
+most operations are efficient 
+
+key value pair - dictionary 
+
+**std::map**
+elements are ordered by key 
+no duplicates are allowed (keys are unique)
+
+insert 
+    std::map<string, string> m {
+        {ak, ak},
+        {kk, kk}
+    }
+    m["tk"] = "ching"  // This inserts 
+
+    .at("Key") -> throw error when key is not found
+
+
+note: no reverse iterators in unordered map (both multilmap and map)
+
+
+### Container Adaptors Container
+
+#### Stack
+
+Adaptors - because already implemented using STL containers 
+
+size()
+pop()
+top()
+push()
+
+LIFO
+
+
+#### Queue
+
+FIFO
+
+no iterators supported
+no STL methods or algos 
+
+why vector can be used in Queue as underlying stL container..
+
+
+#### Priority Queue
+
+    #include <queue>
+
+    uses vector as underlying container 
+
+    biggest element is always at the top position - 
+
+    Arranges the elements in descending order 
+
+    user defined - operator overloading < less than
 
 
 RTTI 
